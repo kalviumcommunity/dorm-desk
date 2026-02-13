@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/responsive_home.dart';
+import 'screens/widget_tree_demo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +12,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ResponsiveHome(),
+      title: 'DormDesk Widget Tree Demo',
+      home: WidgetTreeDemo(),
     );
   }
 }
