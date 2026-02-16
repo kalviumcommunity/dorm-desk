@@ -82,7 +82,7 @@ class FirestoreService {
         .collection('notes')
         .where('uid', isEqualTo: uid)
         .where('text', isGreaterThanOrEqualTo: searchText)
-        .where('text', isLessThanOrEqualTo: searchText + '\uf8ff')
+        .where('text', isLessThanOrEqualTo: '$searchText\uf8ff')
         .orderBy('createdAt', descending: true)
         .snapshots();
   }
