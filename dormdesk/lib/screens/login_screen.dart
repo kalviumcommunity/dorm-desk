@@ -26,7 +26,7 @@ class LoginScreen extends StatelessWidget {
                   emailController.text,
                   passwordController.text,
                 );
-                if (user != null) {
+                if (user != null && context.mounted) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (_) => HomeScreen(user.uid)),

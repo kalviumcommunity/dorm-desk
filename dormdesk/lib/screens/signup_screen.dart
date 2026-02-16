@@ -20,11 +20,13 @@ class SignupScreen extends StatelessWidget {
             TextField(controller: passwordController, decoration: const InputDecoration(labelText: 'Password'), obscureText: true),
             ElevatedButton(
               onPressed: () async {
-                await auth.signUp(
+                final user = await auth.signUp(
                   emailController.text,
                   passwordController.text,
                 );
-                Navigator.pop(context);
+                if (user != null && context.mounted) {
+                  Navigator.pop(context);
+                }
               },
               child: const Text('Sign Up'),
             ),
