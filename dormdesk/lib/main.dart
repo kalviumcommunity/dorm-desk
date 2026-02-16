@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'screens/login_screen.dart';
+import 'screens/responsive_home_old.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,8 +18,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'DormDesk - Smart Notes',
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(), 
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF6750A4),
+          brightness: Brightness.light,
+        ),
+      ),
+      home: LoginScreen(),
     );
   }
 }

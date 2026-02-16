@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import 'signup_screen.dart';
-import 'home_screen.dart';
+import 'responsive_home_old.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (uid != null && context.mounted) {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (_) => HomeScreen(uid)),
+                      MaterialPageRoute(builder: (_) => ResponsiveHome(uid: uid!)),
                     );
                   }
                 } catch (e) {
@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => SignupScreen()),
+                  MaterialPageRoute(builder: (_) => const SignupScreen()),
                 );
               },
               child: const Text('Create Account'),
