@@ -27,12 +27,23 @@ class SignupScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                final user = await auth.signUp(
-                  emailController.text,
-                  passwordController.text,
-                );
-                if (user != null && context.mounted) {
-                  Navigator.pop(context);
+                try {
+                  final uid = await auth.signUp(
+                    emailController.text,
+                    passwordController.text,
+                  );
+                  if (uid != null && context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Account created successfully!')),
+                    );
+                    Navigator.pop(context);
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(e.toString())),
+                    );
+                  }
                 }
               },
               child: const Text('Sign Up'),

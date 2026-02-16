@@ -31,9 +31,30 @@ class HomeScreen extends StatelessWidget {
         children: [
           TextField(controller: noteController),
           ElevatedButton(
-            onPressed: () {
-              firestore.addNote(uid, noteController.text);
-              noteController.clear();
+            onPressed: () async {
+              if (noteController.text.trim().isNotEmpty) {
+                try {
+                  await firestore.addNote(uid, noteController.text);
+                  noteController.clear();
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Note added successfully!')),
+                    );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(e.toString())),
+                    );
+                  }
+                }
+              } else {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please enter a note')),
+                  );
+                }
+              }
             },
             child: const Text('Add Note'),
           ),
@@ -49,7 +70,22 @@ class HomeScreen extends StatelessWidget {
                       title: Text(d['text']),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
-                        onPressed: () => firestore.deleteNote(d.id),
+                        onPressed: () async {
+                          try {
+                            await firestore.deleteNote(d.id);
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Note deleted successfully!')),
+                              );
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(e.toString())),
+                              );
+                            }
+                          }
+                        },
                       ),
                     );
                   }).toList(),

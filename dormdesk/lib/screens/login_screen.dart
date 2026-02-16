@@ -48,15 +48,23 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final user = await auth.login(
-                  emailController.text,
-                  passwordController.text,
-                );
-                if (user != null && context.mounted) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => HomeScreen(user.uid)),
+                try {
+                  final uid = await auth.login(
+                    emailController.text,
+                    passwordController.text,
                   );
+                  if (uid != null && context.mounted) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => HomeScreen(uid)),
+                    );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(e.toString())),
+                    );
+                  }
                 }
               },
               child: const Text('Login'),
