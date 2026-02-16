@@ -16,15 +16,23 @@ class SignupScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(controller: emailController, decoration: const InputDecoration(labelText: 'Email')),
-            TextField(controller: passwordController, decoration: const InputDecoration(labelText: 'Password'), obscureText: true),
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+            ),
+            TextField(
+              controller: passwordController,
+              decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
             ElevatedButton(
               onPressed: () async {
+                final navigator = Navigator.of(context);
                 await auth.signUp(
                   emailController.text,
                   passwordController.text,
                 );
-                Navigator.pop(context);
+                navigator.pop();
               },
               child: const Text('Sign Up'),
             ),
