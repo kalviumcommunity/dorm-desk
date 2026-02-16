@@ -2,13 +2,30 @@ import 'package:flutter/material.dart';
 import '../services/firestore_service.dart';
 import '../services/auth_service.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final String uid;
-  HomeScreen(this.uid, {super.key});
+  const HomeScreen(this.uid, {super.key});
 
-  final noteController = TextEditingController();
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late final TextEditingController noteController;
   final firestore = FirestoreService();
   final auth = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    noteController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    noteController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +37,11 @@ class HomeScreen extends StatelessWidget {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await auth.logout();
-              Navigator.pop(context);
+              if (mounted) {
+                Navigator.pop(context);
+              }
             },
-          )
+          ),
         ],
       ),
       body: Column(
@@ -30,17 +49,22 @@ class HomeScreen extends StatelessWidget {
           TextField(controller: noteController),
           ElevatedButton(
             onPressed: () {
-              firestore.addNote(uid, noteController.text);
-              noteController.clear();
+              if (noteController.text.isNotEmpty) {
+                firestore.addNote(widget.uid, noteController.text);
+                noteController.clear();
+              }
             },
             child: const Text('Add Note'),
           ),
           Expanded(
             child: StreamBuilder(
-              stream: firestore.getNotes(uid),
+              stream: firestore.getNotes(widget.uid),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) return const CircularProgressIndicator();
                 final docs = snapshot.data!.docs;
+                if (docs.isEmpty) {
+                  return const Center(child: Text('No notes yet'));
+                }
                 return ListView(
                   children: docs.map((d) {
                     return ListTile(
@@ -54,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );
