@@ -27,12 +27,13 @@ class SignupScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                final navigator = Navigator.of(context);
-                await auth.signUp(
+                final user = await auth.signUp(
                   emailController.text,
                   passwordController.text,
                 );
-                navigator.pop();
+                if (user != null && context.mounted) {
+                  Navigator.pop(context);
+                }
               },
               child: const Text('Sign Up'),
             ),

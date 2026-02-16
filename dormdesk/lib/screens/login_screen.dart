@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   emailController.text,
                   passwordController.text,
                 );
-                if (user != null && mounted) {
+                if (user != null && context.mounted) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (_) => HomeScreen(user.uid)),

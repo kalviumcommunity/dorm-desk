@@ -37,7 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await auth.logout();
+<<<<<<< HEAD
               if (mounted) {
+=======
+              if (context.mounted) {
+>>>>>>> Flutter
                 Navigator.pop(context);
               }
             },
