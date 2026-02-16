@@ -2,30 +2,13 @@ import 'package:flutter/material.dart';
 import '../services/firestore_service.dart';
 import '../services/auth_service.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   final String uid;
-  const HomeScreen(this.uid, {super.key});
+  HomeScreen(this.uid, {super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  late final TextEditingController noteController;
+  final noteController = TextEditingController();
   final firestore = FirestoreService();
   final auth = AuthService();
-
-  @override
-  void initState() {
-    super.initState();
-    noteController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    noteController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +20,11 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await auth.logout();
-<<<<<<< HEAD
-              if (mounted) {
-=======
               if (context.mounted) {
->>>>>>> Flutter
                 Navigator.pop(context);
               }
             },
-          ),
+          )
         ],
       ),
       body: Column(
@@ -53,22 +32,17 @@ class _HomeScreenState extends State<HomeScreen> {
           TextField(controller: noteController),
           ElevatedButton(
             onPressed: () {
-              if (noteController.text.isNotEmpty) {
-                firestore.addNote(widget.uid, noteController.text);
-                noteController.clear();
-              }
+              firestore.addNote(uid, noteController.text);
+              noteController.clear();
             },
             child: const Text('Add Note'),
           ),
           Expanded(
             child: StreamBuilder(
-              stream: firestore.getNotes(widget.uid),
+              stream: firestore.getNotes(uid),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) return const CircularProgressIndicator();
                 final docs = snapshot.data!.docs;
-                if (docs.isEmpty) {
-                  return const Center(child: Text('No notes yet'));
-                }
                 return ListView(
                   children: docs.map((d) {
                     return ListTile(
@@ -82,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             ),
-          ),
+          )
         ],
       ),
     );
