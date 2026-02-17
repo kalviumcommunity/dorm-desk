@@ -1,13 +1,29 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 
-class LoginScreen extends StatelessWidget {
 
-  LoginScreen({super.key});
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+class _LoginScreenState extends State<LoginScreen> {
+  late final TextEditingController emailController;
+  late final TextEditingController passwordController;
   final auth = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,35 +39,18 @@ class LoginScreen extends StatelessWidget {
         child: Column(
 
           children: [
-
             TextField(
               controller: emailController,
               decoration: const InputDecoration(labelText: "Email"),
             ),
-
             TextField(
               controller: passwordController,
               decoration: const InputDecoration(labelText: "Password"),
               obscureText: true,
             ),
-
-            const SizedBox(height: 20),
-
             ElevatedButton(
 
               onPressed: () async {
-
-                final user = await auth.login(
-                  emailController.text,
-                  passwordController.text,
-                );
-
-                if (user != null) {
-
-                  Navigator.pushReplacementNamed(
-                    context,
-                    '/home',
-                    arguments: user.uid,
                   );
 
                 }
@@ -65,12 +64,6 @@ class LoginScreen extends StatelessWidget {
             TextButton(
 
               onPressed: () {
-                Navigator.pushNamed(context, '/signup');
-              },
-
-              child: const Text("Create Account"),
-
-            ),
 
           ],
 

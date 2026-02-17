@@ -30,9 +30,6 @@ class HomeScreen extends StatelessWidget {
             onPressed: () async {
 
               await auth.logout();
-
-              Navigator.pushReplacementNamed(context, '/login');
-
             },
 
           )
@@ -48,17 +45,12 @@ class HomeScreen extends StatelessWidget {
           TextField(controller: noteController),
 
           ElevatedButton(
-
-            onPressed: () {
-
-              firestore.addNote(uid, noteController.text);
-              noteController.clear();
-
             },
 
             child: const Text("Add Note"),
 
           ),
+
 
         ],
 
