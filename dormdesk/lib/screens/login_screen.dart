@@ -14,9 +14,10 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
 
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: const Text("Login")),
 
       body: Padding(
+
         padding: const EdgeInsets.all(16),
 
         child: Column(
@@ -25,12 +26,12 @@ class LoginScreen extends StatelessWidget {
 
             TextField(
               controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: "Email"),
             ),
 
             TextField(
               controller: passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration: const InputDecoration(labelText: "Password"),
               obscureText: true,
             ),
 
@@ -52,29 +53,33 @@ class LoginScreen extends StatelessWidget {
                     '/home',
                     arguments: user.uid,
                   );
+
                 }
 
               },
 
-              child: const Text('Login'),
+              child: const Text("Login"),
 
             ),
 
             TextButton(
 
               onPressed: () {
-
                 Navigator.pushNamed(context, '/signup');
-
               },
 
-              child: const Text('Create Account'),
+              child: const Text("Create Account"),
 
-            )
+            ),
 
           ],
+
         ),
+
       ),
+
     );
+
   }
+
 }
