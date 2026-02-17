@@ -14,7 +14,7 @@ class SignupScreen extends StatelessWidget {
 
     return Scaffold(
 
-      appBar: AppBar(title: const Text('Sign Up')),
+      appBar: AppBar(title: const Text("Sign Up")),
 
       body: Padding(
 
@@ -26,12 +26,12 @@ class SignupScreen extends StatelessWidget {
 
             TextField(
               controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: "Email"),
             ),
 
             TextField(
               controller: passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration: const InputDecoration(labelText: "Password"),
               obscureText: true,
             ),
 
@@ -39,27 +39,31 @@ class SignupScreen extends StatelessWidget {
 
               onPressed: () async {
 
+
               },
 
-              child: const Text('Sign Up'),
+              child: const Text("Sign Up"),
 
             ),
 
             TextButton(
 
               onPressed: () {
-
                 Navigator.pushNamed(context, '/login');
-
               },
 
-              child: const Text('Already have account? Login'),
+              child: const Text("Already have account? Login"),
 
             )
 
           ],
+
         ),
+
       ),
+
     );
+
   }
+
 }

@@ -254,3 +254,99 @@ Navigator.pushReplacementNamed(
 Using named routes makes navigation clean, scalable, and easier to manage in larger applications like DormDesk. It also allows safe data transfer between screens.
 
 ---
+
+## Responsive Layout Design — Sprint 3.17
+
+A responsive layout was implemented in DormDesk using Flutter’s core layout widgets: Container, Row, and Column. The layout adapts dynamically to different screen sizes, ensuring a consistent user experience across mobile and tablet devices.
+
+---
+
+### Layout Structure
+
+The layout consists of three main sections:
+
+* Header Section — Displays DormDesk title
+* Main Content Area — Shows panels using Row (tablet) or Column (mobile)
+* Footer / Bottom Panel — Additional UI section
+
+---
+
+### Key Widgets Used
+
+**Container**
+Used to define structure, spacing, colors, and alignment.
+
+```dart
+Container(
+  width: double.infinity,
+  height: 120,
+  color: Colors.blue,
+  child: Center(child: Text("DormDesk Header")),
+);
+```
+
+**Column**
+Used for vertical layout on mobile devices.
+
+```dart
+Column(
+  children: [
+    Container(color: Colors.orange),
+    Container(color: Colors.green),
+  ],
+);
+```
+
+**Row**
+Used for horizontal layout on larger screens.
+
+```dart
+Row(
+  children: [
+    Expanded(child: Container(color: Colors.orange)),
+    Expanded(child: Container(color: Colors.green)),
+  ],
+);
+```
+
+---
+
+### Responsive Logic Using MediaQuery
+
+Screen width is detected and layout adjusts automatically:
+
+```dart
+double width = MediaQuery.of(context).size.width;
+bool isTablet = width > 600;
+```
+
+Mobile → Column layout
+Tablet → Row layout
+
+---
+
+### Navigation Integration
+
+The responsive layout is accessible via named route:
+
+```dart
+Navigator.pushNamed(context, '/responsive');
+```
+
+---
+
+### Screenshots
+
+(Add screenshots here)
+
+* Mobile layout (Column)
+* Tablet layout (Row)
+* Responsive layout transition
+
+---
+
+### Reflection
+
+Responsive design ensures the application works across multiple screen sizes without layout issues. Using Row, Column, Container, and MediaQuery makes the UI flexible, scalable, and adaptable for real-world deployment.
+
+---

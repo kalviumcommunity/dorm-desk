@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
 
       appBar: AppBar(
 
-        title: const Text('Dashboard'),
+        title: const Text("Dashboard"),
 
         actions: [
 
@@ -35,6 +35,7 @@ class HomeScreen extends StatelessWidget {
           )
 
         ],
+
       ),
 
       body: Column(
@@ -46,7 +47,7 @@ class HomeScreen extends StatelessWidget {
           ElevatedButton(
             },
 
-            child: const Text('Add Note'),
+            child: const Text("Add Note"),
 
           ),
 
