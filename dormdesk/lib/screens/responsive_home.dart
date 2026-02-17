@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'user_input_form.dart';
 
 class ResponsiveHome extends StatelessWidget {
   const ResponsiveHome({super.key});
@@ -9,7 +10,21 @@ class ResponsiveHome extends StatelessWidget {
     final isWide = width > 600;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("DormDesk Responsive")),
+      appBar: AppBar(
+        title: const Text("DormDesk Responsive"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const UserInputForm()),
+              );
+            },
+            tooltip: 'Edit Profile',
+          ),
+        ],
+      ),
       body: isWide ? _tabletLayout() : _phoneLayout(),
     );
   }
