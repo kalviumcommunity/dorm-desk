@@ -35,26 +35,10 @@ class SignupScreen extends StatelessWidget {
               obscureText: true,
             ),
 
-            const SizedBox(height: 20),
-
             ElevatedButton(
 
               onPressed: () async {
 
-                final user = await auth.signUp(
-                  emailController.text,
-                  passwordController.text,
-                );
-
-                if (user != null) {
-
-                  Navigator.pushReplacementNamed(
-                    context,
-                    '/home',
-                    arguments: user.uid,
-                  );
-
-                }
 
               },
 
