@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
-import 'signup_screen.dart';
-import 'home_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -31,11 +27,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+
       appBar: AppBar(title: const Text('Login')),
+
       body: Padding(
         padding: const EdgeInsets.all(16),
+
         child: Column(
+
           children: [
             TextField(
               controller: emailController,
@@ -47,11 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
               obscureText: true,
             ),
             ElevatedButton(
+
               onPressed: () async {
-                try {
-                  final uid = await auth.login(
-                    emailController.text,
-                    passwordController.text,
                   );
                   if (uid != null && context.mounted) {
                     Navigator.pushReplacement(
@@ -66,18 +64,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   }
                 }
+
               },
+
               child: const Text('Login'),
+
             ),
+
             TextButton(
+
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => SignupScreen()),
-                );
+
               },
+
               child: const Text('Create Account'),
-            ),
           ],
         ),
       ),

@@ -194,4 +194,63 @@ flutter run
 
 This project is licensed under the MIT License.
 
+---
 
+## Multi-Screen Navigation — Sprint 3.16
+
+DormDesk uses Flutter’s Navigator and named routes to enable navigation between Welcome, Login, Signup, and Home screens.
+
+### Routes Setup
+
+Routes are defined in `main.dart`:
+
+```dart
+MaterialApp(
+  initialRoute: '/welcome',
+  routes: {
+    '/welcome': (context) => WelcomeScreen(),
+    '/login': (context) => LoginScreen(),
+    '/signup': (context) => SignupScreen(),
+  },
+  onGenerateRoute: (settings) {
+    if (settings.name == '/home') {
+      final uid = settings.arguments as String;
+      return MaterialPageRoute(
+        builder: (context) => HomeScreen(uid),
+      );
+    }
+    return null;
+  },
+);
+```
+
+### Navigation Flow
+
+```
+WelcomeScreen → LoginScreen → HomeScreen
+SignupScreen → HomeScreen
+Logout → LoginScreen
+```
+
+### Navigator Methods Used
+
+* `Navigator.pushNamed()` – Navigate to another screen
+* `Navigator.pushReplacementNamed()` – Replace current screen
+* `Navigator.pop()` – Go back
+* `onGenerateRoute` – Pass UID to HomeScreen
+
+### Argument Passing Example
+
+```dart
+Navigator.pushReplacementNamed(
+  context,
+  '/home',
+  arguments: user.uid,
+);
+```
+
+### Reflection
+
+Using named routes makes navigation clean, scalable, and easier to manage in larger applications like DormDesk. It also allows safe data transfer between screens.
+
+---

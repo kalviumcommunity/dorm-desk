@@ -8,7 +8,6 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  bool isWelcome = true;
 
   @override
   Widget build(BuildContext context) {
@@ -21,32 +20,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+
+            const Icon(
               Icons.apartment,
               size: 80,
-              color: isWelcome ? Colors.blue : Colors.green,
+              color: Colors.blue,
             ),
+
             const SizedBox(height: 20),
-            Text(
-              isWelcome
-                  ? 'Welcome to DormDesk'
-                  : 'Let’s Manage Hostel Issues!',
+
+            const Text(
+              'Welcome to DormDesk',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: isWelcome ? Colors.black : Colors.green,
               ),
-              textAlign: TextAlign.center,
             ),
+
             const SizedBox(height: 30),
+
             ElevatedButton(
               onPressed: () {
-                setState(() {
-                  isWelcome = !isWelcome;
-                });
+                Navigator.pushNamed(context, '/login');
               },
               child: const Text('Get Started'),
             ),
+
           ],
         ),
       ),
