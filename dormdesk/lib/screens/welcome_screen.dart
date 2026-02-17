@@ -5,7 +5,6 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
 
       appBar: AppBar(
@@ -52,7 +51,16 @@ class WelcomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, '/responsive');
               },
-              child: const Text("Open Responsive Layout"),
+              child: const Text("Responsive Layout"),
+            ),
+
+            const SizedBox(height: 15),
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/scrollable');
+              },
+              child: const Text("Scrollable Views"),
             ),
 
           ],
@@ -62,6 +70,5 @@ class WelcomeScreen extends StatelessWidget {
       ),
 
     );
-
   }
 }

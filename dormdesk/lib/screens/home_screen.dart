@@ -60,48 +60,6 @@ class HomeScreen extends StatelessWidget {
 
           ),
 
-          Expanded(
-
-            child: StreamBuilder(
-
-              stream: firestore.getNotes(uid),
-
-              builder: (context, snapshot) {
-
-                if (!snapshot.hasData) {
-                  return const CircularProgressIndicator();
-                }
-
-                final docs = snapshot.data!.docs;
-
-                return ListView(
-
-                  children: docs.map((d) {
-
-                    return ListTile(
-
-                      title: Text(d['text']),
-
-                      trailing: IconButton(
-
-                        icon: const Icon(Icons.delete),
-
-                        onPressed: () => firestore.deleteNote(d.id),
-
-                      ),
-
-                    );
-
-                  }).toList(),
-
-                );
-
-              },
-
-            ),
-
-          )
-
         ],
 
       ),

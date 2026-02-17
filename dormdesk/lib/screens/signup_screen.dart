@@ -62,16 +62,6 @@ class SignupScreen extends StatelessWidget {
 
             ),
 
-            TextButton(
-
-              onPressed: () {
-                Navigator.pushNamed(context, '/login');
-              },
-
-              child: const Text("Already have account? Login"),
-
-            )
-
           ],
 
         ),
