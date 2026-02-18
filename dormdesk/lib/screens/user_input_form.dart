@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../widgets/info_card.dart';
+import '../widgets/like_button.dart';
 
 class UserInputForm extends StatefulWidget {
   const UserInputForm({super.key});
@@ -266,8 +268,38 @@ class _UserInputFormState extends State<UserInputForm> {
               ),
               
               const SizedBox(height: 32),
+
+              // Quick Links Section using Custom Widgets
+              _buildSectionHeader('Quick Links'),
+              const SizedBox(height: 16),
               
-              // Submit Button
+              InfoCard(
+                title: 'Dormitory Rules',
+                subtitle: 'View community guidelines and policies',
+                icon: Icons.gavel,
+                iconColor: Theme.of(context).colorScheme.primary,
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Opening dormitory rules...')),
+                  );
+                },
+              ),
+              
+              InfoCard(
+                title: 'Emergency Contacts',
+                subtitle: 'Important numbers for emergencies',
+                icon: Icons.contact_phone,
+                iconColor: Colors.red,
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Opening emergency contacts...')),
+                  );
+                },
+              ),
+
+              const SizedBox(height: 24),
+
+              // Submit Button with Like Button
               Center(
                 child: _isLoading
                     ? const CircularProgressIndicator()
@@ -288,6 +320,21 @@ class _UserInputFormState extends State<UserInputForm> {
                           elevation: 4,
                         ),
                       ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Like Button for Form Feedback
+              Center(
+                child: LikeButton(
+                  initialLikes: 0,
+                  showCount: true,
+                  onLikeChanged: (likes) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Thanks for the feedback! $likes likes')),
+                    );
+                  },
+                ),
               ),
               
               const SizedBox(height: 16),
