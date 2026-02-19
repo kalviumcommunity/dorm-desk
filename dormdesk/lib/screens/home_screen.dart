@@ -1,63 +1,133 @@
 import 'package:flutter/material.dart';
-import '../services/firestore_service.dart';
 import '../services/auth_service.dart';
+import 'issues_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
-  final String uid;
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-  HomeScreen(this.uid, {super.key});
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  int issuesRaisedToday = 0;
+  bool isExpanded = false;
+  bool showMessage = false;
 
-  final noteController = TextEditingController();
-  final firestore = FirestoreService();
-  final auth = AuthService();
+  late AnimationController _rotationController;
+
+  final AuthService _authService = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    _rotationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _rotationController.dispose();
+    super.dispose();
+  }
+
+  void raiseIssue() {
+    setState(() {
+      issuesRaisedToday++;
+      isExpanded = !isExpanded;
+      showMessage = true;
+    });
+
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        setState(() {
+          showMessage = false;
+        });
+      }
+    });
+  }
+
+  void goToDetails() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 600),
+        pageBuilder: (_, animation, __) => const IssueDetailsScreen(),
+        transitionsBuilder: (_, animation, __, child) {
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOut,
+            )),
+            child: child,
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
       appBar: AppBar(
-
-        title: const Text("Dashboard"),
-
+        title: const Text('DormDesk Dashboard'),
         actions: [
-
-          IconButton(
-
-            icon: const Icon(Icons.logout),
-
-            onPressed: () async {
-
-              await auth.logout();
-            },
-
-          )
-
-        ],
-
-      ),
-
-      body: Column(
-
-        children: [
-
-          TextField(controller: noteController),
-
-          ElevatedButton(
-            },
-
-            child: const Text("Add Note"),
-
+          RotationTransition(
+            turns: _rotationController,
+            child: const Padding(
+              padding: EdgeInsets.only(right: 16),
+              child: Icon(Icons.refresh),
+            ),
           ),
-
-
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await _authService.logout();
+              Navigator.pop(context);
+            },
+          ),
         ],
-
       ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              width: double.infinity,
+              height: isExpanded ? 180 : 120,
+              decoration: BoxDecoration(
+                color: isExpanded ? Colors.blueAccent : Colors.orange,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Center(
+                child: Text(
+                  'Issues Today: $issuesRaisedToday',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
 
+
+
+            ElevatedButton(
+              onPressed: goToDetails,
+              child: const Text('View Issue Details'),
+            ),
+          ],
+        ),
+      ),
     );
-
   }
-
 }
