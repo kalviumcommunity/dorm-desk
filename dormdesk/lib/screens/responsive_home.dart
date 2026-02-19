@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'user_input_form.dart';
 import 'services_screen.dart';
+import 'asset_demo_screen.dart';
 import '../widgets/info_card.dart';
 import '../widgets/quick_action_button.dart';
 import '../widgets/service_request_card.dart';
@@ -20,8 +21,28 @@ class _ResponsiveHomeState extends State<ResponsiveHome> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("DormDesk Responsive"),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/logo.svg',
+              width: 32,
+              height: 32,
+            ),
+            const SizedBox(width: 12),
+            const Text("DormDesk Responsive"),
+          ],
+        ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.image),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AssetDemoScreen()),
+              );
+            },
+            tooltip: 'Assets Demo',
+          ),
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
