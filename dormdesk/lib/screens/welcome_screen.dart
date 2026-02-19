@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
+
   const WelcomeScreen({super.key});
 
   @override
@@ -40,19 +41,49 @@ class WelcomeScreen extends StatelessWidget {
             const SizedBox(height: 30),
 
             ElevatedButton(
+
               onPressed: () {
                 Navigator.pushNamed(context, '/login');
               },
+
               child: const Text("Get Started"),
+
             ),
 
             const SizedBox(height: 15),
 
             ElevatedButton(
+
               onPressed: () {
                 Navigator.pushNamed(context, '/responsive');
               },
-              child: const Text("Open Responsive Layout"),
+
+              child: const Text("Responsive Layout"),
+
+            ),
+
+            const SizedBox(height: 15),
+
+            ElevatedButton(
+
+              onPressed: () {
+                Navigator.pushNamed(context, '/scrollable');
+              },
+
+              child: const Text("Scrollable Views"),
+
+            ),
+
+            const SizedBox(height: 15),
+
+            ElevatedButton(
+
+              onPressed: () {
+                Navigator.pushNamed(context, '/responsive-design');
+              },
+
+              child: const Text("Responsive Design Demo"),
+
             ),
 
           ],
@@ -64,4 +95,5 @@ class WelcomeScreen extends StatelessWidget {
     );
 
   }
+
 }

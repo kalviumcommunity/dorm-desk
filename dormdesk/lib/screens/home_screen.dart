@@ -119,28 +119,7 @@ class _HomeScreenState extends State<HomeScreen>
               ),
             ),
 
-            const SizedBox(height: 20),
 
-            AnimatedOpacity(
-              opacity: showMessage ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 500),
-              child: const Text(
-                'Issue Raised Successfully!',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.green,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            ElevatedButton(
-              onPressed: raiseIssue,
-              child: const Text('Raise Issue'),
-            ),
-
-            const SizedBox(height: 20),
 
             ElevatedButton(
               onPressed: goToDetails,

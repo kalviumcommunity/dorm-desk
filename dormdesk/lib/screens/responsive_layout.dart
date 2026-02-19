@@ -8,16 +8,13 @@ class ResponsiveLayout extends StatelessWidget {
   Widget build(BuildContext context) {
 
     double width = MediaQuery.of(context).size.width;
-
     bool isTablet = width > 600;
 
     return Scaffold(
 
-      appBar: AppBar(
-        title: const Text("Responsive Layout"),
-      ),
+      appBar: AppBar(title: const Text("Responsive Layout")),
 
-      body: Container(
+      body: Padding(
 
         padding: const EdgeInsets.all(16),
 
@@ -26,28 +23,12 @@ class ResponsiveLayout extends StatelessWidget {
           children: [
 
             Container(
-
-              width: double.infinity,
               height: 120,
-
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(12),
-              ),
-
-              child: const Center(
-                child: Text(
-                  "DormDesk Header",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                  ),
-                ),
-              ),
-
+              color: Colors.blue,
+              child: const Center(child: Text("Header")),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
 
             Expanded(
 
@@ -58,26 +39,15 @@ class ResponsiveLayout extends StatelessWidget {
                       children: [
 
                         Expanded(
-                          child: Container(
-                            color: Colors.orange,
-                            child: const Center(
-                              child: Text("Left Panel"),
-                            ),
-                          ),
+                          child: Container(color: Colors.orange),
                         ),
 
-                        const SizedBox(width: 10),
-
                         Expanded(
-                          child: Container(
-                            color: Colors.green,
-                            child: const Center(
-                              child: Text("Right Panel"),
-                            ),
-                          ),
+                          child: Container(color: Colors.green),
                         ),
 
                       ],
+
                     )
 
                   : Column(
@@ -85,26 +55,15 @@ class ResponsiveLayout extends StatelessWidget {
                       children: [
 
                         Expanded(
-                          child: Container(
-                            color: Colors.orange,
-                            child: const Center(
-                              child: Text("Top Panel"),
-                            ),
-                          ),
+                          child: Container(color: Colors.orange),
                         ),
 
-                        const SizedBox(height: 10),
-
                         Expanded(
-                          child: Container(
-                            color: Colors.green,
-                            child: const Center(
-                              child: Text("Bottom Panel"),
-                            ),
-                          ),
+                          child: Container(color: Colors.green),
                         ),
 
                       ],
+
                     ),
 
             ),

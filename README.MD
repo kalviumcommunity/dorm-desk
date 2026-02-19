@@ -350,3 +350,102 @@ Navigator.pushNamed(context, '/responsive');
 Responsive design ensures the application works across multiple screen sizes without layout issues. Using Row, Column, Container, and MediaQuery makes the UI flexible, scalable, and adaptable for real-world deployment.
 
 ---
+## Scrollable Views with ListView & GridView — Sprint 3.18
+
+This feature demonstrates scrollable layouts in DormDesk using Flutter’s ListView and GridView widgets. These widgets allow efficient display of dynamic and large datasets while maintaining smooth UI performance.
+
+---
+
+### ListView Implementation
+
+ListView.builder is used to display a horizontal scrollable list of hostel-related items.
+
+```dart
+SizedBox(
+  height: 200,
+  child: ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: 10,
+    itemBuilder: (context, index) {
+      return Container(
+        width: 150,
+        margin: EdgeInsets.all(8),
+        color: Colors.blue,
+        child: Center(child: Text("Item $index")),
+      );
+    },
+  ),
+)
+```
+
+This allows efficient rendering by loading only visible elements.
+
+---
+
+### GridView Implementation
+
+GridView.builder is used to display structured hostel service tiles in a grid layout.
+
+```dart
+GridView.builder(
+  shrinkWrap: true,
+  physics: NeverScrollableScrollPhysics(),
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+  ),
+  itemCount: 6,
+  itemBuilder: (context, index) {
+    return Container(
+      margin: EdgeInsets.all(8),
+      color: Colors.green,
+      child: Center(child: Text("Tile $index")),
+    );
+  },
+)
+```
+
+This provides an organized and scalable UI.
+
+---
+
+### Navigation
+
+Scrollable views are integrated using named routes:
+
+```dart
+Navigator.pushNamed(context, '/scrollable');
+```
+
+---
+
+### Benefits
+
+• Efficient rendering using builder constructors
+• Smooth scrolling performance
+• Scalable for large datasets
+• Organized UI layout
+• Improved user experience
+
+---
+
+### Reflection
+
+ListView and GridView improve UI efficiency by rendering only visible items, reducing memory usage and improving performance. Builder constructors are recommended for large datasets because they dynamically generate widgets as needed instead of loading everything at once.
+
+This implementation prepares DormDesk for displaying dynamic hostel issues, notifications, and service dashboards efficiently.
+---
+## Responsive Design using MediaQuery and LayoutBuilder — Sprint 3.23
+
+Implemented adaptive UI using MediaQuery and LayoutBuilder.
+
+MediaQuery was used to detect screen width and height.
+
+LayoutBuilder was used to switch between mobile and tablet layouts.
+
+Mobile layout uses Column structure.
+
+Tablet layout uses Row structure.
+
+This ensures DormDesk UI adapts smoothly across all screen sizes.
+
+---
