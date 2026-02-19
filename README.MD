@@ -434,3 +434,18 @@ ListView and GridView improve UI efficiency by rendering only visible items, red
 
 This implementation prepares DormDesk for displaying dynamic hostel issues, notifications, and service dashboards efficiently.
 ---
+## Responsive Design using MediaQuery and LayoutBuilder — Sprint 3.23
+
+Implemented adaptive UI using MediaQuery and LayoutBuilder.
+
+MediaQuery was used to detect screen width and height.
+
+LayoutBuilder was used to switch between mobile and tablet layouts.
+
+Mobile layout uses Column structure.
+
+Tablet layout uses Row structure.
+
+This ensures DormDesk UI adapts smoothly across all screen sizes.
+
+---
