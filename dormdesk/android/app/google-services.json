@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "852756809264",
-    "project_id": "drom-desk",
-    "storage_bucket": "drom-desk.firebasestorage.app"
+    "project_number": "967549582789",
+    "project_id": "dormdesk-5788b",
+    "storage_bucket": "dormdesk-5788b.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:852756809264:android:161072856639dbf3e00ff5",
+        "mobilesdk_app_id": "1:967549582789:android:8b7455f968d111a71b9fac",
         "android_client_info": {
           "package_name": "com.example.dormdesk"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB2NXvsCKYhEzNg5GspUCa2KahNVFgXlrU"
+          "current_key": "AIzaSyBfsl6GXK-615_e6BKO60Vl49y4XSox9h0"
         }
       ],
       "services": {
