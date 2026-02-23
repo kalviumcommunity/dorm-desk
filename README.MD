@@ -449,3 +449,48 @@ Tablet layout uses Row structure.
 This ensures DormDesk UI adapts smoothly across all screen sizes.
 
 ---
+
+## Firebase SDK Integration (FlutterFire CLI)
+
+Firebase was integrated using FlutterFire CLI to enable authentication and Firestore.
+
+Steps performed:
+
+• Installed Firebase CLI and FlutterFire CLI  
+• Logged into Firebase  
+• Ran flutterfire configure  
+• Generated firebase_options.dart  
+• Initialized Firebase in main.dart  
+
+Firebase.initializeApp(
+ options: DefaultFirebaseOptions.currentPlatform,
+);
+
+Result:
+
+Firebase authentication and Firestore services are fully functional in DormDesk.
+
+Benefits:
+
+• Automated configuration  
+• Multi-platform support  
+• Reduced manual setup errors  
+
+---
+
+## Persistent Login using Firebase Auth
+
+Implemented automatic user session handling using FirebaseAuth.authStateChanges().
+
+AuthGate widget listens to authentication state changes and routes users automatically.
+
+If user is logged in → HomeScreen  
+If user is logged out → LoginScreen  
+
+Firebase handles session persistence automatically across app restarts.
+
+No manual storage required.
+
+This ensures seamless and secure user experience.
+
+---

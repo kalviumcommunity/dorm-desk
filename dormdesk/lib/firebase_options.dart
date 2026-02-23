@@ -41,46 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'your-web-api-key',
-    appId: 'your-web-app-id',
-    messagingSenderId: 'your-sender-id',
-    projectId: 'your-project-id',
-    authDomain: 'your-project-id.firebaseapp.com',
-    storageBucket: 'your-project-id.appspot.com',
+    apiKey: 'AIzaSyBoT-tMbuGj7Xa7Ol_piWPpBi0N349s73k',
+    appId: '1:967549582789:web:93dd8ad80073407c1b9fac',
+    messagingSenderId: '967549582789',
+    projectId: 'dormdesk-5788b',
+    authDomain: 'dormdesk-5788b.firebaseapp.com',
+    storageBucket: 'dormdesk-5788b.firebasestorage.app',
+    measurementId: 'G-3BFZCQWWB8',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'your-android-api-key',
-    appId: 'your-android-app-id',
-    messagingSenderId: 'your-sender-id',
-    projectId: 'your-project-id',
-    storageBucket: 'your-project-id.appspot.com',
+    apiKey: 'AIzaSyBfsl6GXK-615_e6BKO60Vl49y4XSox9h0',
+    appId: '1:967549582789:android:8b7455f968d111a71b9fac',
+    messagingSenderId: '967549582789',
+    projectId: 'dormdesk-5788b',
+    storageBucket: 'dormdesk-5788b.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'your-ios-api-key',
-    appId: 'your-ios-app-id',
-    messagingSenderId: 'your-sender-id',
-    projectId: 'your-project-id',
-    storageBucket: 'your-project-id.appspot.com',
+    apiKey: 'AIzaSyC0Lu3oS-zgI07BCc6ysbhbsaU3yrYTCdI',
+    appId: '1:967549582789:ios:a7434bf44dd06a651b9fac',
+    messagingSenderId: '967549582789',
+    projectId: 'dormdesk-5788b',
+    storageBucket: 'dormdesk-5788b.firebasestorage.app',
     iosBundleId: 'com.example.dormdesk',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'your-macos-api-key',
-    appId: 'your-macos-app-id',
-    messagingSenderId: 'your-sender-id',
-    projectId: 'your-project-id',
-    storageBucket: 'your-project-id.appspot.com',
+    apiKey: 'AIzaSyC0Lu3oS-zgI07BCc6ysbhbsaU3yrYTCdI',
+    appId: '1:967549582789:ios:a7434bf44dd06a651b9fac',
+    messagingSenderId: '967549582789',
+    projectId: 'dormdesk-5788b',
+    storageBucket: 'dormdesk-5788b.firebasestorage.app',
     iosBundleId: 'com.example.dormdesk',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'your-windows-api-key',
-    appId: 'your-windows-app-id',
-    messagingSenderId: 'your-sender-id',
-    projectId: 'your-project-id',
-    authDomain: 'your-project-id.firebaseapp.com',
-    storageBucket: 'your-project-id.appspot.com',
+    apiKey: 'AIzaSyBoT-tMbuGj7Xa7Ol_piWPpBi0N349s73k',
+    appId: '1:967549582789:web:6258081a4e38fc061b9fac',
+    messagingSenderId: '967549582789',
+    projectId: 'dormdesk-5788b',
+    authDomain: 'dormdesk-5788b.firebaseapp.com',
+    storageBucket: 'dormdesk-5788b.firebasestorage.app',
+    measurementId: 'G-413EFR3KGD',
   );
+
 }
