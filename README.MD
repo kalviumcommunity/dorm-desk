@@ -477,3 +477,20 @@ Benefits:
 • Reduced manual setup errors  
 
 ---
+
+## Persistent Login using Firebase Auth
+
+Implemented automatic user session handling using FirebaseAuth.authStateChanges().
+
+AuthGate widget listens to authentication state changes and routes users automatically.
+
+If user is logged in → HomeScreen  
+If user is logged out → LoginScreen  
+
+Firebase handles session persistence automatically across app restarts.
+
+No manual storage required.
+
+This ensures seamless and secure user experience.
+
+---

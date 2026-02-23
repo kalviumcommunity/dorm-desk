@@ -3,10 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
 
-import 'screens/welcome_screen.dart';
-import 'screens/login_screen.dart';
+import 'screens/auth_gate.dart';
 import 'screens/signup_screen.dart';
-import 'screens/home_screen.dart';
 import 'screens/responsive_layout.dart';
 import 'screens/scrollable_views.dart';
 import 'screens/responsive_design_demo.dart';
@@ -36,13 +34,9 @@ class DormDeskApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
 
-      initialRoute: '/welcome',
+      home: const AuthGate(),
 
       routes: {
-
-        '/welcome': (context) => const WelcomeScreen(),
-
-        '/login': (context) => LoginScreen(),
 
         '/signup': (context) => SignupScreen(),
 
@@ -51,22 +45,6 @@ class DormDeskApp extends StatelessWidget {
         '/scrollable': (context) => const ScrollableViews(),
 
         '/responsive-design': (context) => const ResponsiveDesignDemo(),
-
-      },
-
-      onGenerateRoute: (settings) {
-
-        if (settings.name == '/home') {
-
-          final uid = settings.arguments as String;
-
-          return MaterialPageRoute(
-            builder: (context) => HomeScreen(uid),
-          );
-
-        }
-
-        return null;
 
       },
 
