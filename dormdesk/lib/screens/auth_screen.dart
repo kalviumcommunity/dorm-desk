@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'responsive_home.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -21,6 +20,7 @@ class _AuthScreenState extends State<AuthScreen> {
   bool isLogin = true;
   bool isLoading = false;
   bool _obscurePassword = true;
+  bool _rememberMe = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -34,7 +34,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your email';
+      return 'Please enter your email address';
     }
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
       return 'Please enter a valid email address';
@@ -47,7 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
       return 'Please enter your password';
     }
     if (value.length < 6) {
-      return 'Password must be at least 6 characters';
+      return 'Password must be at least 6 characters long';
     }
     return null;
   }
@@ -56,8 +56,8 @@ class _AuthScreenState extends State<AuthScreen> {
     if (!isLogin && (value == null || value.isEmpty)) {
       return 'Please enter your full name';
     }
-    if (!isLogin && value!.length < 3) {
-      return 'Name must be at least 3 characters';
+    if (!isLogin && value!.length < 2) {
+      return 'Name must be at least 2 characters long';
     }
     return null;
   }
@@ -73,72 +73,111 @@ class _AuthScreenState extends State<AuthScreen> {
       UserCredential userCredential;
       
       if (isLogin) {
+        // Login existing user
         userCredential = await _auth.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
+        
+        // Update last login timestamp
+        if (userCredential.user != null) {
+          await _firestore.collection('users').doc(userCredential.user!.uid).update({
+            'lastLogin': FieldValue.serverTimestamp(),
+          });
+        }
       } else {
+        // Create new user
         userCredential = await _auth.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
 
-        await userCredential.user?.updateDisplayName(_nameController.text.trim());
-        await _firestore.collection('users').doc(userCredential.user!.uid).set({
-          'uid': userCredential.user!.uid,
-          'email': _emailController.text.trim(),
-          'name': _nameController.text.trim(),
-          'createdAt': FieldValue.serverTimestamp(),
-          'lastLogin': FieldValue.serverTimestamp(),
-        });
+        // Save user profile to Firestore
+        if (userCredential.user != null) {
+          await userCredential.user?.updateDisplayName(_nameController.text.trim());
+          await _firestore.collection('users').doc(userCredential.user!.uid).set({
+            'uid': userCredential.user!.uid,
+            'email': _emailController.text.trim(),
+            'name': _nameController.text.trim(),
+            'createdAt': FieldValue.serverTimestamp(),
+            'lastLogin': FieldValue.serverTimestamp(),
+            'emailVerified': false,
+            'isActive': true,
+          });
+        }
       }
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(isLogin ? 'Login Successful!' : 'Account Created Successfully!'),
+            content: Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white),
+                const SizedBox(width: 8),
+                Text(
+                  isLogin ? 'Login Successful!' : 'Account Created Successfully!',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
             backgroundColor: Colors.green,
             duration: const Duration(seconds: 3),
+            behavior: SnackBarBehavior.floating,
           ),
         );
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const ResponsiveHome()),
-        );
+        // Navigation will be handled automatically by StreamBuilder in main.dart
       }
     } on FirebaseAuthException catch (e) {
       String errorMessage = 'Authentication Error';
       
       switch (e.code) {
         case 'user-not-found':
-          errorMessage = 'No user found with this email.';
+          errorMessage = 'No account found with this email address.';
           break;
         case 'wrong-password':
-          errorMessage = 'Incorrect password.';
+          errorMessage = 'The password is incorrect. Please try again.';
           break;
         case 'email-already-in-use':
-          errorMessage = 'An account already exists with this email.';
+          errorMessage = 'An account with this email already exists.';
           break;
         case 'weak-password':
-          errorMessage = 'Password is too weak. Please choose a stronger password.';
+          errorMessage = 'Password should be at least 6 characters long.';
           break;
         case 'invalid-email':
           errorMessage = 'Please enter a valid email address.';
           break;
         case 'too-many-requests':
-          errorMessage = 'Too many requests. Try again later.';
+          errorMessage = 'Too many failed attempts. Please try again later.';
+          break;
+        case 'operation-not-allowed':
+          errorMessage = 'This operation is not allowed. Please contact support.';
+          break;
+        case 'user-disabled':
+          errorMessage = 'This account has been disabled. Please contact support.';
           break;
         default:
-          errorMessage = e.message ?? 'An error occurred during authentication.';
+          errorMessage = e.message ?? 'An authentication error occurred.';
       }
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(errorMessage),
-            backgroundColor: Colors.red,
+            content: Row(
+              children: [
+                const Icon(Icons.error, color: Colors.white),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    errorMessage,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.red[700],
             duration: const Duration(seconds: 4),
+            behavior: SnackBarBehavior.floating,
           ),
         );
       }
@@ -146,15 +185,63 @@ class _AuthScreenState extends State<AuthScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('An unexpected error occurred: ${e.toString()}'),
-            backgroundColor: Colors.red,
+            content: Row(
+              children: [
+                const Icon(Icons.warning, color: Colors.white),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'An unexpected error occurred: ${e.toString()}',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.orange[700],
             duration: const Duration(seconds: 4),
+            behavior: SnackBarBehavior.floating,
           ),
         );
       }
     } finally {
       if (mounted) {
         setState(() => isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _resetPassword() async {
+    final email = _emailController.text.trim();
+    
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please enter your email address first'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Password reset email sent! Check your inbox.'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to send password reset email. Please try again.'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }
@@ -171,6 +258,7 @@ class _AuthScreenState extends State<AuthScreen> {
             children: [
               const SizedBox(height: 40),
               
+              // Logo and Title
               Column(
                 children: [
                   Container(
@@ -206,6 +294,7 @@ class _AuthScreenState extends State<AuthScreen> {
               
               const SizedBox(height: 40),
               
+              // Auth Form Card
               Card(
                 elevation: 8,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -215,12 +304,13 @@ class _AuthScreenState extends State<AuthScreen> {
                     key: _formKey,
                     child: Column(
                       children: [
+                        // Name field (only for signup)
                         if (!isLogin) ...[
                           TextFormField(
                             controller: _nameController,
                             validator: _validateName,
                             decoration: InputDecoration(
-                              labelText: 'Full Name',
+                              labelText: 'Full Name *',
                               prefixIcon: const Icon(Icons.person),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -231,39 +321,43 @@ class _AuthScreenState extends State<AuthScreen> {
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                               ),
+                              helperText: 'Enter your full name',
                             ),
                             textInputAction: TextInputAction.next,
                           ),
                           const SizedBox(height: 16),
                         ],
                         
+                        // Email field
                         TextFormField(
                           controller: _emailController,
                           validator: _validateEmail,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                            labelText: 'Email Address',
+                            labelText: 'Email Address *',
                             prefixIcon: const Icon(Icons.email),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.primary,
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                               ),
-                            ),
+                            helperText: 'Enter your email address',
                           ),
                           textInputAction: TextInputAction.next,
                         ),
                         const SizedBox(height: 16),
                         
+                        // Password field
                         TextFormField(
                           controller: _passwordController,
                           validator: _validatePassword,
                           obscureText: _obscurePassword,
                           decoration: InputDecoration(
-                            labelText: 'Password',
+                            labelText: 'Password *',
                             prefixIcon: const Icon(Icons.lock),
                             suffixIcon: IconButton(
                               icon: Icon(
@@ -278,16 +372,33 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.primary,
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                               ),
-                            ),
+                            helperText: 'Minimum 6 characters',
                           ),
                           textInputAction: TextInputAction.done,
                           onFieldSubmitted: (_) => _submitAuthForm(),
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 16),
                         
+                        // Remember me checkbox (only for login)
+                        if (isLogin) ...[
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _rememberMe,
+                                onChanged: (value) => setState(() => _rememberMe = value!),
+                              ),
+                              const SizedBox(width: 8),
+                              const Text('Remember me'),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                        ],
+                        
+                        // Submit button
                         SizedBox(
                           width: double.infinity,
                           height: 50,
@@ -310,22 +421,35 @@ class _AuthScreenState extends State<AuthScreen> {
                                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                     ),
                                   )
-                                : Text(
-                                    isLogin ? 'Login' : 'Sign Up',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        isLogin ? Icons.login : Icons.person_add,
+                                        size: 20,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        isLogin ? 'Login' : 'Sign Up',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                           ),
                         ),
                         
                         const SizedBox(height: 16),
                         
+                        // Toggle between login/signup
                         TextButton(
                           onPressed: () {
-                            setState(() => isLogin = !isLogin);
-                            _formKey.currentState?.reset();
+                            setState(() {
+                              isLogin = !isLogin;
+                              _formKey.currentState?.reset();
+                            });
                           },
                           child: Text(
                             isLogin 
@@ -337,6 +461,19 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                           ),
                         ),
+                        
+                        // Forgot password (only for login)
+                        if (isLogin) ...[
+                          const SizedBox(height: 8),
+                          TextButton.icon(
+                            onPressed: _resetPassword,
+                            icon: const Icon(Icons.help_outline),
+                            label: const Text('Forgot Password?'),
+                            style: TextButton.styleFrom(
+                              foregroundColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),
@@ -345,17 +482,18 @@ class _AuthScreenState extends State<AuthScreen> {
               
               const SizedBox(height: 40),
               
-              if (isLogin) ...[
-                TextButton.icon(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Password reset feature coming soon!')),
-                    );
-                  },
-                  icon: const Icon(Icons.help_outline),
-                  label: const Text('Forgot Password?'),
+              // Footer text
+              Center(
+                child: Text(
+                  isLogin 
+                      ? 'By logging in, you agree to our Terms of Service and Privacy Policy'
+                      : 'By creating an account, you agree to our Terms of Service and Privacy Policy',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-              ],
+              ),
             ],
           ),
         ),

@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 import 'screens/auth_screen.dart';
-import 'screens/responsive_home.dart';
+import 'screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'DormDesk - Firebase Auth',
+      title: 'DormDesk - Complete Auth Flow',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
+          // Show loading indicator while checking auth state
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Scaffold(
               body: Center(
@@ -39,13 +40,12 @@ class MyApp extends StatelessWidget {
             );
           }
           
-          if (snapshot.hasData) {
-            final user = snapshot.data;
-            if (user != null) {
-              return const ResponsiveHome();
-            }
+          // If user is authenticated, show home screen
+          if (snapshot.hasData && snapshot.data != null) {
+            return HomeScreen(user: snapshot.data!);
           }
           
+          // If user is not authenticated, show auth screen
           return const AuthScreen();
         },
       ),
