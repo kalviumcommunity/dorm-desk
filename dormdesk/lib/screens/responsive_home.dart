@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'user_input_form.dart';
 import 'services_screen.dart';
 import 'asset_demo_screen.dart';
@@ -62,6 +63,21 @@ class _ResponsiveHomeState extends State<ResponsiveHome> {
               );
             },
             tooltip: 'All Services',
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Logged out successfully'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              }
+            },
+            tooltip: 'Logout',
           ),
         ],
       ),
