@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'firestore_data_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final User user;
@@ -12,7 +13,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Welcome, ${user.email ?? 'User'}'),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        foregroundColor: Colors.white,
         elevation: 4,
         actions: [
           IconButton(
@@ -30,6 +31,16 @@ class HomeScreen extends StatelessWidget {
               }
             },
             tooltip: 'Logout',
+          ),
+          IconButton(
+            icon: const Icon(Icons.storage),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const FirestoreDataScreen()),
+              );
+            },
+            tooltip: 'Firestore Data',
           ),
         ],
       ),
