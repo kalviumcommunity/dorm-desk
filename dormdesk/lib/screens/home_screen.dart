@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firestore_data_screen.dart';
+import 'firestore_write_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final User user;
@@ -41,6 +42,16 @@ class HomeScreen extends StatelessWidget {
               );
             },
             tooltip: 'Firestore Data',
+          ),
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const FirestoreWriteScreen()),
+              );
+            },
+            tooltip: 'Firestore Write',
           ),
         ],
       ),
