@@ -85,18 +85,18 @@ class HomeScreen extends StatelessWidget {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primaryContainer,
+                color: Theme.of(context).colorScheme.primary,
                 borderRadius: BorderRadius.circular(60),
               ),
-              child: Icon(
-                Icons.person,
-                size: 60,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              child: const Icon(
+                Icons.dashboard,
+                color: Colors.white,
+                size: 40,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             Text(
-              'You are logged in!',
+              'DormDesk',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.primary,
@@ -104,30 +104,22 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Email: ${user.email ?? 'N/A'}',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              'User ID: ${user.uid}',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+              'Responsive UI Demo',
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
               ),
             ),
-            if (user.displayName != null) ...[
-              const SizedBox(height: 16),
-              Text(
-                'Display Name: ${user.displayName}',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ],
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
             ElevatedButton.icon(
               onPressed: () {
-                _showProfileDetails(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => ResponsiveHome(user: user)),
+                );
               },
-              icon: const Icon(Icons.info),
-              label: const Text('View Profile Details'),
+              icon: const Icon(Icons.devices),
+              label: const Text('Try Responsive UI'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Colors.white,
@@ -136,38 +128,6 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _showProfileDetails(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Profile Details'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Email: ${user.email ?? 'N/A'}'),
-              const SizedBox(height: 8),
-              Text('User ID: ${user.uid}'),
-              const SizedBox(height: 8),
-              Text('Display Name: ${user.displayName ?? 'Not set'}'),
-              const SizedBox(height: 8),
-              Text('Email Verified: ${user.emailVerified ? 'Yes' : 'No'}'),
-              Text('Created: ${user.metadata.creationTime?.toString() ?? 'Unknown'}'),
-              Text('Last Sign In: ${user.metadata.lastSignInTime?.toString() ?? 'Unknown'}'),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
       ),
     );
   }

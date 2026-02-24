@@ -1,82 +1,54 @@
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
-import 'signup_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'responsive_home.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  late final TextEditingController emailController;
-  late final TextEditingController passwordController;
-  final auth = AuthService();
-
-  @override
-  void initState() {
-    super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(
+        title: const Text("Login"),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+            const Icon(
+              Icons.login,
+              size: 80,
+              color: Colors.blue,
             ),
-            TextField(
-              controller: passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
+            const SizedBox(height: 24),
+            const Text(
+              "DormDesk Login",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            ElevatedButton(
+            const SizedBox(height: 32),
+            ElevatedButton.icon(
               onPressed: () async {
-                try {
-                  final uid = await auth.login(
-                    emailController.text,
-                    passwordController.text,
+                final User? user = FirebaseAuth.instance.currentUser;
+                if (user != null && context.mounted) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => ResponsiveHome(user: user)),
                   );
-                  if (uid != null && context.mounted) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (_) => const ResponsiveHome()),
-                    );
-                  }
-                } catch (e) {
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(e.toString())),
-                    );
-                  }
                 }
               },
-              child: const Text('Login'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => SignupScreen()),
-                );
-              },
-              child: const Text('Create Account'),
+              icon: const Icon(Icons.home),
+              label: const Text("Continue to Home"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
             ),
           ],
         ),

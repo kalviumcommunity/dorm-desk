@@ -1,55 +1,99 @@
 import 'package:flutter/material.dart';
 
-class WelcomeScreen extends StatefulWidget {
+class WelcomeScreen extends StatelessWidget {
+
   const WelcomeScreen({super.key});
 
   @override
-  State<WelcomeScreen> createState() => _WelcomeScreenState();
-}
-
-class _WelcomeScreenState extends State<WelcomeScreen> {
-  bool isWelcome = true;
-
-  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+
       appBar: AppBar(
         title: const Text('DormDesk'),
         centerTitle: true,
       ),
+
       body: Center(
+
         child: Column(
+
           mainAxisAlignment: MainAxisAlignment.center,
+
           children: [
-            Icon(
+
+            const Icon(
               Icons.apartment,
               size: 80,
-              color: isWelcome ? Colors.blue : Colors.green,
+              color: Colors.blue,
             ),
+
             const SizedBox(height: 20),
-            Text(
-              isWelcome
-                  ? 'Welcome to DormDesk'
-                  : 'Let’s Manage Hostel Issues!',
+
+            const Text(
+              "Welcome to DormDesk",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: isWelcome ? Colors.black : Colors.green,
               ),
-              textAlign: TextAlign.center,
             ),
+
             const SizedBox(height: 30),
+
             ElevatedButton(
+
               onPressed: () {
-                setState(() {
-                  isWelcome = !isWelcome;
-                });
+                Navigator.pushNamed(context, '/login');
               },
-              child: const Text('Get Started'),
+
+              child: const Text("Get Started"),
+
             ),
+
+            const SizedBox(height: 15),
+
+            ElevatedButton(
+
+              onPressed: () {
+                Navigator.pushNamed(context, '/responsive');
+              },
+
+              child: const Text("Responsive Layout"),
+
+            ),
+
+            const SizedBox(height: 15),
+
+            ElevatedButton(
+
+              onPressed: () {
+                Navigator.pushNamed(context, '/scrollable');
+              },
+
+              child: const Text("Scrollable Views"),
+
+            ),
+
+            const SizedBox(height: 15),
+
+            ElevatedButton(
+
+              onPressed: () {
+                Navigator.pushNamed(context, '/responsive-design');
+              },
+
+              child: const Text("Responsive Design Demo"),
+
+            ),
+
           ],
+
         ),
+
       ),
+
     );
+
   }
+
 }
