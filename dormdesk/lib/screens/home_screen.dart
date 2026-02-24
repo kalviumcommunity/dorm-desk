@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'firestore_data_screen.dart';
 import 'firestore_write_screen.dart';
 import 'map_screen.dart';
+import 'responsive_home.dart';
 
 class HomeScreen extends StatelessWidget {
   final User user;
@@ -63,6 +64,16 @@ class HomeScreen extends StatelessWidget {
               );
             },
             tooltip: 'Google Maps',
+          ),
+          IconButton(
+            icon: const Icon(Icons.devices),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ResponsiveHome(user: user)),
+              );
+            },
+            tooltip: 'Responsive UI',
           ),
         ],
       ),
