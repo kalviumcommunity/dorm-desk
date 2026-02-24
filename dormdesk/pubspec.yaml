@@ -38,6 +38,7 @@ dependencies:
   firebase_auth: ^5.0.0
   google_maps_flutter: ^2.5.3
   location: ^5.0.3
+  geolocator: ^10.1.0
   permission_handler: ^11.3.1
 
   # The following adds the Cupertino Icons font to your application.
@@ -70,6 +71,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/markers/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
