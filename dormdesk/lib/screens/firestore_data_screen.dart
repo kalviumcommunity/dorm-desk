@@ -19,6 +19,7 @@ class _FirestoreDataScreenState extends State<FirestoreDataScreen> {
   String _selectedView = 'notes'; // 'notes', 'users', 'products'
   bool _isLoading = false;
   String? _error;
+  int _hotReloadCount = 0; // Demo counter for Hot Reload
 
   @override
   void dispose() {
@@ -31,6 +32,10 @@ class _FirestoreDataScreenState extends State<FirestoreDataScreen> {
   Future<void> _addSampleData() async {
     setState(() => _isLoading = true);
     _error = null;
+    
+    // Debug output for Hot Reload demonstration
+    debugPrint('🔥 Hot Reload Demo: Adding sample data...');
+    debugPrint('📊 Current reload count: $_hotReloadCount');
 
     try {
       final user = FirebaseAuth.instance.currentUser;
@@ -45,6 +50,7 @@ class _FirestoreDataScreenState extends State<FirestoreDataScreen> {
       switch (_selectedView) {
         case 'notes':
           await _firestoreService.addNote(user.uid, 'Sample note: ${DateTime.now()}');
+          debugPrint('✅ Added note via Hot Reload');
           break;
         case 'users':
           await _firestoreService.addDocument('users', {
@@ -53,6 +59,7 @@ class _FirestoreDataScreenState extends State<FirestoreDataScreen> {
             'role': 'student',
             'createdAt': DateTime.now().toIso8601String(),
           });
+          debugPrint('✅ Added user via Hot Reload');
           break;
         case 'products':
           await _firestoreService.addDocument('products', {
@@ -62,8 +69,15 @@ class _FirestoreDataScreenState extends State<FirestoreDataScreen> {
             'inStock': true,
             'createdAt': DateTime.now().toIso8601String(),
           });
+          debugPrint('✅ Added product via Hot Reload');
           break;
       }
+
+      setState(() {
+        _isLoading = false;
+        _hotReloadCount++; // Increment Hot Reload counter
+        debugPrint('🔄 Hot Reload completed! Total reloads: $_hotReloadCount');
+      });
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -162,7 +176,27 @@ class _FirestoreDataScreenState extends State<FirestoreDataScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Firestore Data Demo'),
+        title: Row(
+          children: [
+            const Text('Firestore Data Demo'),
+            const SizedBox(width: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                '🔥 $_hotReloadCount',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ],
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
         actions: [
