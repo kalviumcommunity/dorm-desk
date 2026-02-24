@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'screens/firebase_storage_demo.dart';
 import 'screens/auth_screen.dart';
-import 'screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const DormDeskApp());
+  runApp(const StorageDemoApp());
 }
 
-class DormDeskApp extends StatelessWidget {
-  const DormDeskApp({super.key});
+class StorageDemoApp extends StatelessWidget {
+  const StorageDemoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'DormDesk - Responsive UI',
+      title: 'Firebase Storage Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6750A4),
+          seedColor: const Color(0xFFFF6B35), // Orange color
           brightness: Brightness.light,
         ),
       ),
@@ -37,9 +37,9 @@ class DormDeskApp extends StatelessWidget {
             );
           }
           
-          // If user is authenticated, show home screen
+          // If user is authenticated, show storage demo
           if (snapshot.hasData && snapshot.data != null) {
-            return HomeScreen(user: snapshot.data!);
+            return const FirebaseStorageDemo();
           }
           
           // If user is not authenticated, show auth screen
