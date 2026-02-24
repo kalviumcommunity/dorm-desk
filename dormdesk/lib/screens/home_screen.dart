@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firestore_data_screen.dart';
 import 'firestore_write_screen.dart';
+import 'map_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final User user;
@@ -52,6 +53,16 @@ class HomeScreen extends StatelessWidget {
               );
             },
             tooltip: 'Firestore Write',
+          ),
+          IconButton(
+            icon: const Icon(Icons.map),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const MapScreen()),
+              );
+            },
+            tooltip: 'Google Maps',
           ),
         ],
       ),
