@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -23,6 +24,29 @@ class FirestoreService {
     }
   }
 
+  // Add a new document with validation and security
+  Future<void> addDocument(String collection, Map<String, dynamic> data) async {
+    try {
+      // Validate update data
+      final validatedData = _validateDocumentData(collection, data);
+      
+      // Add metadata
+      final documentWithMetadata = {
+        ...validatedData,
+        'createdAt': Timestamp.now(),
+        'updatedAt': Timestamp.now(),
+        'createdBy': FirebaseAuth.instance.currentUser?.uid,
+        'version': 1,
+      };
+      
+      await _db.collection(collection).add(documentWithMetadata);
+    } on FirebaseException catch (e) {
+      throw 'Failed to add document: ${e.message}';
+    } catch (e) {
+      throw 'An unexpected error occurred while adding document';
+    }
+  }
+
   // Get real-time stream of notes for a user
   Stream<QuerySnapshot> getNotes(String uid) {
     return _db
@@ -30,6 +54,20 @@ class FirestoreService {
         .where('uid', isEqualTo: uid)
         .orderBy('createdAt', descending: true)
         .snapshots();
+  }
+
+  // Get collection documents
+  Future<QuerySnapshot> getCollection(String collection) async {
+    try {
+      return await _db.collection(collection).get();
+    } on FirebaseException catch (e) {
+      throw 'Failed to get collection: ${e.message}';
+    }
+  }
+
+  // Get collection stream
+  Stream<QuerySnapshot> getCollectionStream(String collection) {
+    return _db.collection(collection).snapshots();
   }
 
   // Update an existing note
@@ -85,23 +123,6 @@ class FirestoreService {
         .where('text', isLessThanOrEqualTo: '$searchText\uf8ff')
         .orderBy('createdAt', descending: true)
         .snapshots();
-  }
-
-  // Get notes count for a user
-  Future<int> getNotesCount(String uid) async {
-    try {
-      final snapshot = await _db
-          .collection('notes')
-          .where('uid', isEqualTo: uid)
-          .count()
-          .get();
-      return snapshot.count ?? 0;
-    } on FirebaseException catch (e) {
-    } on FirebaseException catch (e) {
-      throw 'Failed to add document: ${e.message}';
-    } catch (e) {
-      throw 'Failed to add document: $e';
-    }
   }
 
   // Update a document with validation and security

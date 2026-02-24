@@ -688,7 +688,13 @@ class _FirestoreDataScreenState extends State<FirestoreDataScreen> {
                               const SizedBox(width: 8),
                               const Text('View Details'),
                             ],
+                          ),
                         ),
+                        const PopupMenuItem(
+                          value: 'delete',
+                          child: Row(
+                            children: [
+                              const Icon(Icons.delete_forever, color: Colors.red),
                               const SizedBox(width: 8),
                               const Text('Delete', style: TextStyle(color: Colors.red)),
                             ],
