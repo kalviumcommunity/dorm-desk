@@ -1,8 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <application
         android:label="dormdesk"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyQ4mN8Zx2Kp7Wt3Ls9VyD6BhR1c"
         <activity
             android:name=".MainActivity"
             android:exported="true"
