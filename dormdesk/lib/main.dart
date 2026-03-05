@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'screens/upload_image_screen.dart';
 import 'screens/location_preview_screen.dart';
-
+import 'screens/user_location_map_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -17,7 +17,7 @@ class DormDeskApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       // home: UploadImageScreen(),
-      home: LocationPreviewScreen(),
+      home: UserLocationMapScreen()
     );
   }
 }

@@ -6,6 +6,8 @@
         android:icon="@mipmap/ic_launcher">
         android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyQ4mN8Zx2Kp7Wt3Ls9VyD6BhR1c"
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
